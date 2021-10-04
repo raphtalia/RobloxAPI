@@ -1,9 +1,19 @@
 local RobloxAPI = require(script.Parent)
 
 return function()
+    describe("RobloxAPI", function()
+        it("should be able to return API dump", function()
+            expect(RobloxAPI.dump()).to.be.a("table")
+        end)
+
+        it("should be able to return API object", function()
+            expect(RobloxAPI).to.be.ok()
+        end)
+    end)
+
     local api = RobloxAPI()
 
-    describe("RobloxAPI", function()
+    describe("API", function()
         it("should be able to check permissions", function()
             expect(api:HasPermission("None")).to.be.equal(true)
             expect(api:HasPermission("PluginSecurity")).to.be.equal(false)
@@ -28,7 +38,7 @@ return function()
             expect(api:GetClasses()).to.be.a("table")
         end)
 
-        it("should be able t oreturn all enums", function()
+        it("should be able to return all enums", function()
             expect(api:GetEnums()).to.be.a("table")
         end)
     end)

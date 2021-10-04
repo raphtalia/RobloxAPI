@@ -83,18 +83,16 @@ function RobloxAPI_METATABLE:GetEvents(instance)
     return events
 end
 
-return function()
-    -- TODO: Take in version argument
+local RobloxAPI = {}
+RobloxAPI.__index = RobloxAPI
+
+function RobloxAPI.__call(_,apiDump)
+    apiDump = apiDump or RobloxAPI.dump()
 
     local self = {
         _classes = {},
         _enums = {},
     }
-
-    local apiDump = HttpService:JSONDecode(HttpService:RequestAsync({
-        Url = "https://raw.githubusercontent.com/MaximumADHD/Roblox-Client-Tracker/roblox/API-Dump.json",
-        Method = "GET",
-    }).Body)
 
     for _,rawClass in ipairs(apiDump.Classes) do
         local class = Class(rawClass, self)
@@ -108,3 +106,14 @@ return function()
 
     return setmetatable(self, RobloxAPI_METATABLE)
 end
+
+function RobloxAPI.dump()
+    -- TODO: Take in version argument
+
+    return HttpService:JSONDecode(HttpService:RequestAsync({
+        Url = "https://raw.githubusercontent.com/MaximumADHD/Roblox-Client-Tracker/roblox/API-Dump.json",
+        Method = "GET",
+    }).Body)
+end
+
+return setmetatable(RobloxAPI, RobloxAPI)
